@@ -11,10 +11,12 @@ class PlayerCharacter:
     max_hp: int
     ac: int
     capacity: int
-    feats: List[Feat] | None
-    spells: List[Spell] | None
+    feats: List[Feat]
+    spells: List[str] | None
     # Dynamic Stats
     hp: int
+    knowledge: List[str] | None
+    memories: List[str] | None
     conditions: List[Status] | None
     gold: int
     inventory: List[Item]

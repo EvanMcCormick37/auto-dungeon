@@ -26,7 +26,5 @@ class Room(Location):
 
 class Level(Base):
     room_ids: List[str]
-    macguffins: List[str] | None
-    plotlines: List[str] | None
-    bosses: List[str] | None
+    hooks: List[Lore] | None
     effects: List[Status] | None
