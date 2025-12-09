@@ -1,7 +1,7 @@
-from typing import Optional, List
+from typing import List
 from enum import Enum
-from base import Action, Diceroll, AttackStats
-from item import Item
+from src.game.models.base import Action, Diceroll, AttackStats, Item, Lore
+from src.game.models.character import Character
 
 class School(str, Enum):
     ABJURATION = 'Abjuration'
@@ -15,10 +15,17 @@ class School(str, Enum):
 
 class SpellStats:
     level: int
-    school: Optional[School]
-    components: Optional[List[Item]]
-    duration: Optional[int]
-    damage: Optional[Diceroll]
+    school: School
+    spell_slots_used: List[int] | None
+    components: List[Item] | None
+    duration: int
+    damage: Diceroll
 class Spell(Action):
-    
-    attack_stats: Optional[AttackStats]
+    attack_stats: AttackStats
+
+
+# Rare, magical Items.
+class MacGuffin(Item):
+    spells: List[Spell] | None
+    lore: List[Lore] | None
+    relationships: List[Character] | None
