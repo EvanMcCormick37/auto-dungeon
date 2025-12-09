@@ -20,7 +20,7 @@ class NodeType(str, Enum):
     LEVEL = "level"
     ROOM = "room"
     DOOR = "door"
-    ENTITY = "entity"          # Monsters, NPCs, creatures
+    ENTITY = "entity"
     ITEM = "item"
     MACGUFFIN = "macguffin"
     LORE = "lore"
@@ -32,8 +32,7 @@ class EdgeType(str, Enum):
     """Types of relationships between nodes."""
     # Spatial relationships
     CONTAINS = "contains"           # level -> room, room -> item
-    CONNECTS_TO = "connects_to"     # room <-> room (via door)
-    LEADS_TO = "leads_to"           # door -> room
+    CONNECTS_TO = "connects_to"     # room <-> door
     
     # Entity relationships
     LOCATED_IN = "located_in"       # entity -> room
@@ -302,10 +301,10 @@ class WorldGraph:
         if door_id:
             self.add_node(door_id, NodeType.DOOR, **door_data)
             self.add_edge(room1_id, door_id, EdgeType.CONNECTS_TO)
-            self.add_edge(door_id, room2_id, EdgeType.LEADS_TO)
+            self.add_edge(door_id, room2_id, EdgeType.CONNECTS_TO)
             if bidirectional:
                 self.add_edge(room2_id, door_id, EdgeType.CONNECTS_TO)
-                self.add_edge(door_id, room1_id, EdgeType.LEADS_TO)
+                self.add_edge(door_id, room1_id, EdgeType.CONNECTS_TO)
         else:
             self.add_edge(room1_id, room2_id, EdgeType.CONNECTS_TO)
             if bidirectional:
@@ -327,7 +326,7 @@ class WorldGraph:
                 results.append((target_id, None))
             elif target_node and target_node.get("node_type") == NodeType.DOOR.value:
                 # Follow door to next room
-                for next_room_id, _ in self.get_outgoing_edges(target_id, EdgeType.LEADS_TO):
+                for next_room_id, _ in self.get_outgoing_edges(target_id, EdgeType.CONNECTS_TO):
                     results.append((next_room_id, target_id))
         
         return results
@@ -527,7 +526,7 @@ class WorldGraph:
         return self.find_path(
             start_room_id,
             end_room_id,
-            edge_types=[EdgeType.CONNECTS_TO, EdgeType.LEADS_TO]
+            edge_types=[EdgeType.CONNECTS_TO, EdgeType.CONNECTS_TO]
         )
     
     # =========================================================================

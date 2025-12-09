@@ -1,15 +1,6 @@
 from typing import List, TypedDict, Tuple
 from enum import Enum
 # Enum Classes
-# Different types of Lore we store in the DB.
-class LoreType(str, Enum):
-    POSSIBILITY = "possibility"
-    RELATIONSHIP = "relationship"
-    MOTIVE = "motive"
-    TRAIT = "trait"
-    LOCATION = "location"
-    SECRET = "secret"
-    STORY = "story"
 # Attributes (D&D standard six)
 class Attribute(str, Enum):
     STR = 'STR'
@@ -44,13 +35,20 @@ class Diceroll(TypedDict):
     D12: int
     D20: int
     D100: int
+# Type of targeting used by actions, attacks, and spells
 class TargetType(str, Enum):
     MELEE = "melee"         # Targeting
     RANGED = "ranged"       # Targeting
     EFFECT = "effect"       # Nontargeting
     AOE = "aoe"             # Nontargeting
     SELF = "self"           # Nontargeting
-
+# Different types of Lore we store in the DB.
+class LoreType(str, Enum):
+    POSSIBILITY = "possibility"
+    RELATIONSHIP = "relationship"
+    MOTIVE = "motive"
+    SECRET = "secret"
+    STORY = "story"
 
 # Object Classes
 # Basic object model.
