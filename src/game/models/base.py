@@ -7,6 +7,26 @@ class Base:
     name: str | None
     description: str
 
+# Different types of Lore we store in the DB.
+class LoreType(str, Enum):
+    POSSIBILITY = "possibility"
+    RELATIONSHIP = "relationship"
+    MOTIVE = "motive"
+    TRAIT = "trait"
+    LOCATION = "location"
+    SECRET = "secret"
+    STORY = "story"
+
+# Lore is knowledge of the world, history or characters. Ties together different involved entities.
+class Lore(Base):
+    type: LoreType
+    pc_knows: bool
+    involved: List[str] | None
+
+# A condition which must be met for something to occur. For now essentially just a description. Hard requirements may be added later.
+class Requirement(Base):
+    involved_ids: List[str] | None
+    perception_check: int | None
 # Attributes (D&D standard six)
 class Attribute(str, Enum):
     STR = 'STR'
@@ -85,27 +105,8 @@ class Item:
     weight: int
     uses: List[Action] | None
     effects: List[Status] | None
+    hidden: Requirement | bool = False
 
 class Weapon(Item):
     base_attribute: Attribute | None
     damage_roll: Diceroll | None
-
-# Different types of Lore we store in the DB.
-class LoreType(str, Enum):
-    POSSIBILITY = "possibility"
-    RELATIONSHIP = "relationship"
-    MOTIVE = "motive"
-    TRAIT = "trait"
-    LOCATION = "location"
-    SECRET = "secret"
-    STORY = "story"
-
-# Lore is knowledge of the world, history or characters. Ties together different involved entities.
-class Lore(Base):
-    type: LoreType
-    pc_knows: bool
-    involved: List[str] | None
-
-# A condition which must be met for something to occur. For now essentially just a description. Hard requirements may be added later.
-class Requirement(Base):
-    involved_ids: List[str] | None

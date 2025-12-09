@@ -1,4 +1,3 @@
-from src.game.models.base import Item
 from src.game.models.character import PlayerCharacter, Entity, Conversation
 from src.game.models.location import Room, Level
 from datetime import datetime

@@ -1,5 +1,5 @@
 from typing import Tuple, List
-from src.game.models.base import Base, Attributes, Feat, Status, Action, Attack, Item, Lore
+from src.game.models.base import Base, Attributes, Feat, Status, Action, Attack, Item, Lore, Requirement
 from src.game.models.spell import Spell
 
 # PC Stats 
@@ -12,17 +12,18 @@ class PlayerCharacter:
     ac: int
     capacity: int
     feats: List[Feat]
-    spells: List[str] | None
+    spells: List[Lore | str] | None
     # Dynamic Stats
     hp: int
-    knowledge: List[str] | None
-    memories: List[str] | None
+    knowledge: List[Lore | str] | None
+    memories: List[Lore | str] | None
     conditions: List[Status] | None
     gold: int
     inventory: List[Item]
     equipped: List[Item]
     spell_slots: List[int] | None
     experience: Tuple [int,int]
+    hidden: Requirement | bool = False
 
 # Generic base for anything else with stats
 class Entity(Base):
@@ -40,6 +41,7 @@ class Entity(Base):
     conditions: List[Status | str] | None
     inventory: List[Item | str] | None
     equipped: List[Item | str] | None
+    hidden: Requirement | bool = False
 
 
 # D&D-style stat block for enemies

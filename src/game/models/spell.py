@@ -26,6 +26,6 @@ class Spell(Action):
 
 # Rare, magical Items.
 class MacGuffin(Item):
-    spells: List[Spell] | None
-    lore: List[Lore] | None
-    relationships: List[Character] | None
+    spells: List[Spell | str] | None
+    lore: List[Lore | str] | None
+    relationships: List[Character | str] | None
