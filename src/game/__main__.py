@@ -1,8 +1,8 @@
 # Update src/auto-dungeon/__main__.py
 """Entry point for the dungeon crawler application."""
 
-from autodungeon.config.settings import settings
-from autodungeon.utils.logging import setup_logging
+from game.config.settings import settings
+from game.utils.logging import setup_logging
 
 
 def main() -> None:

@@ -1,26 +1,21 @@
-# Attributes (D&D standard six)
-class Attributes:
-    strength: int
-    dexterity: int
-    constitution: int
-    intelligence: int
-    wisdom: int
-    charisma: int
+from base import Attributes, Feat, Status
+from item import Item, Weapon
+from spell import Spell
+from typing import Tuple, Optional
 
 # Derived modifiers, proficiency bonus
-class PCStats:
+class CharStats:
     name: str
-    character_class: str
+    _class: str
     level: int
     experience: int
     attributes: Attributes
-    max_hp: int
-    current_hp: int
-    armor_class: int
-    proficiency_bonus: int
-    skills: dict[str, int]  # skill_name -> modifier
-    saving_throws: dict[str, int]
-    inventory: list[str]  # item IDs
-    equipped: dict[str, str | None]  # slot -> item_id
+    hp: Tuple[int,int]
+    ac: int
+    attributes: Attributes
+    inventory: list[Item]
+    weapons: list[Weapon]
+    feats: list[Feat]
+    spells: Optional[Spell]
     gold: int
-    conditions: list[str]  # poisoned, prone, etc.
+    conditions: list[Status]  # poisoned, prone, etc.
