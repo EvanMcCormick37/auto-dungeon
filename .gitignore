@@ -1,5 +1,25 @@
-# Environment
-.env
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+lib/
+wheels/
 
-# Dependencies/Caches
-venv/
+# Testing
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# Project-specific
+data/saves/
+data/cache/
+data/db/*.db
+data/db/*.db-shm
+data/db/*.db-wal
+*.log
