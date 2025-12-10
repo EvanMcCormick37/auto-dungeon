@@ -18,6 +18,10 @@ class StateManager:
         """Return the current snapshot of the game state."""
         return self._state
 
+    def get_player_chracter(self) -> PlayerCharacter:
+        """Return the PlayerCharacter."""
+        return self._state.player
+
     def get_entity(self, entity_id: str) -> Entity | PlayerCharacter | Item | Room | None:
         """
         Searches the GameState hierarchy to find an object by its ID.

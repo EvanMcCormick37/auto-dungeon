@@ -145,6 +145,9 @@ def create_test_encounter() -> GameState:
     )
     
     player = PlayerCharacter(
+        id="player-character",
+        name="Ron Jeremy",
+        description="A hunky barbarian outlaw who is enraged with goblins because they look ugly.",
         _class="Barbarian",
         level=3,
         attributes=Attributes(

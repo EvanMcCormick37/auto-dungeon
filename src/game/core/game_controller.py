@@ -91,7 +91,7 @@ class GameController:
         """Execute the Intent -> Plan -> Execute -> State pipeline for a single action."""
         try:
             # Phase 1: INTERPRET (LLM)
-            context = self.state.get_current_state
+            context = self.state.get_current_state()
             action.plan = self.gm.interpret_action(action.intent_text, context)
             
             if action.plan is None:
@@ -128,7 +128,7 @@ class GameController:
         if not self._is_player_alive():
             return "\n[DEFEAT: You have fallen unconscious. Game Over.]"
         
-        if not self.state.has_hostile_entities_in_room():
+        if not len(self.state.get_alive_enemies_in_room()) == 0:
             return "\n[VICTORY: All enemies have been defeated!]"
         
         return None

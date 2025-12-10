@@ -30,7 +30,7 @@ class Item(Base):
 
 # PC Stats 
 @dataclass
-class PlayerCharacter:
+class PlayerCharacter(Base):
     # Persistent Stats
     _class: str
     level: int
@@ -122,5 +122,50 @@ class GameState:
     recent_actions: list[str]  # last 5-10 actions
 
     def summary(self) -> str:
-        """Returns a summary of game state easily parseable by the LLM."""
-        ...
+        """Returns a concise summary of game state for LLM context."""
+        
+        # Player summary
+        pc = self.player
+        equipped_names = ", ".join(item.name for item in pc.equipped) or "nothing"
+        inventory = ", ".join(item.name for item in pc.inventory) or "empty"
+        conditions = ", ".join(s.name for s in pc.conditions) or "none"
+        
+        player_summary = (
+            f"PLAYER: Level {pc.level} {pc._class} | "
+            f"HP: {pc.hp}/{pc.max_hp} | AC: {pc.ac} | "
+            f"Conditions: {conditions}"
+        )
+
+        # Inventory summary
+        inventory_summary = (
+            f"INVENTORY: Equipped: {equipped_names} | {inventory}"
+        )
+        
+        # Location summary
+        location_summary = f"LOCATION: {self.location.name}\n{self.location.description}"
+        
+        # Entities in room
+        entities = []
+        for e in self.location.occupants:
+            weapon = e.equipped[0].name if e.equipped else "unarmed"
+            status = "hostile" if e.disposition == "hostile" else e.disposition
+            entities.append(f"- {e.name}: HP {e.hp}/{e.max_hp}, AC {e.ac}, {weapon} ({status})")
+        
+        entities_summary = "ENTITIES:\n" + "\n".join(entities) if entities else "ENTITIES: None"
+        
+        # Room items
+        items = [item.name for item in self.location.items] if self.location.items else []
+        items_summary = f"ITEMS IN ROOM: {', '.join(items) or 'None'}"
+        
+        # Recent context
+        recent = "\n".join(f"- {a}" for a in self.recent_actions[-5:])
+        recent_summary = f"RECENT:\n{recent}" if recent else ""
+        
+        return "\n\n".join(filter(None, [
+            player_summary,
+            inventory_summary,
+            location_summary,
+            entities_summary,
+            items_summary,
+            recent_summary
+        ]))

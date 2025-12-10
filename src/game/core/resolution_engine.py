@@ -1,4 +1,6 @@
 from src.game.models import ResolutionStatus, Resolution, RollType, RollResult, Action, ActionPlan
+from src.game.core.rules_engine import RulesEngine
+from src.game.core.state_manager import StateManager
 from typing import List
 
 class ResolutionEngine:
@@ -7,7 +9,7 @@ class ResolutionEngine:
     this is pure game logic.
     """
     
-    def __init__(self, rules_engine: 'RulesEngine', state_manager: 'StateManager'):
+    def __init__(self, rules_engine: RulesEngine, state_manager: StateManager):
         self.rules = rules_engine
         self.state = state_manager
     
@@ -52,10 +54,10 @@ class ResolutionEngine:
         else:
             resolution.pending_state_changes = plan.on_failure
         
-        # Check for triggered reactions
-        resolution.triggered_reactions = self._check_reactions(
-            plan, resolution, overall_success
-        )
+        # # Check for triggered reactions
+        # resolution.triggered_reactions = self._check_reactions(
+        #     plan, resolution, overall_success
+        # )
         
         resolution.status = ResolutionStatus.RESOLVED
         return resolution
@@ -74,32 +76,32 @@ class ResolutionEngine:
                                                  RollType.SAVE)]
         return all(r.success for r in primary_rolls)
     
-    def _check_reactions(self, plan: ActionPlan, resolution: Resolution, 
-                         success: bool) -> List[Action]:
-        """Check if any entities react to this action"""
-        reactions = []
+    # def _check_reactions(self, plan: ActionPlan, resolution: Resolution, 
+    #                      success: bool) -> List[Action]:
+    #     """Check if any entities react to this action"""
+    #     reactions = []
         
-        for entity_id in plan.potential_reactions:
-            entity = self.state.get_entity(entity_id)
-            if entity and entity.has_reaction_to(plan.action_type, success):
-                reaction = Action(
-                    id=f"reaction_{entity_id}_{resolution.action_plan.actor_id}",
-                    owner_id=entity_id,
-                    intent_text=entity.get_reaction_intent(plan.action_type),
-                    priority=100  # Reactions are high priority
-                )
-                reactions.append(reaction)
+    #     for entity_id in plan.potential_reactions:
+    #         entity = self.state.get_entity(entity_id)
+    #         if entity and entity.has_reaction_to(plan.action_type, success):
+    #             reaction = Action(
+    #                 id=f"reaction_{entity_id}_{resolution.action_plan.actor_id}",
+    #                 owner_id=entity_id,
+    #                 intent_text=entity.get_reaction_intent(plan.action_type),
+    #                 priority=100  # Reactions are high priority
+    #             )
+    #             reactions.append(reaction)
         
-        return reactions
+    #     return reactions
     
     def _narrate_roll(self, result: RollResult) -> str:
         """Generate a simple narration fragment for a roll"""
         # This is mechanical narration; the DM will embellish later
-        if result.critical_success:
-            return f"[CRITICAL SUCCESS] {result.spec.reason}: {result.natural_roll} (total: {result.total})"
-        elif result.critical_failure:
-            return f"[CRITICAL FAILURE] {result.spec.reason}: {result.natural_roll}"
-        elif result.success:
+        # if result.critical_success:
+        #     return f"[CRITICAL SUCCESS] {result.spec.reason}: {result.natural_roll} (total: {result.total})"
+        # elif result.critical_failure:
+        #     return f"[CRITICAL FAILURE] {result.spec.reason}: {result.natural_roll}"
+        if result.success:
             return f"[SUCCESS] {result.spec.reason}: rolled {result.total} vs {result.spec.dc or result.spec.target_ac}"
         else:
             return f"[FAILURE] {result.spec.reason}: rolled {result.total} vs {result.spec.dc or result.spec.target_ac}"

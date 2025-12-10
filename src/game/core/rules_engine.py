@@ -115,7 +115,7 @@ class RulesEngine:
 
         return RollResult(
             spec=spec,
-            result=total,
+            roll=total,
             outcome=outcome,
             state_changes=changes
         )

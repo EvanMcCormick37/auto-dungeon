@@ -14,8 +14,7 @@ class NarratorOracle:
     def compose_narration(
         self,
         updates: List[str],
-        state_summary: str,
-        history: str
+        state_summary: str
     ) -> str:
         """
         Transform mechanical game updates into immersive narrative prose.
