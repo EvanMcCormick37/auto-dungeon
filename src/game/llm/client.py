@@ -98,14 +98,14 @@ class OllamaClient:
     def generate(
         self,
         prompt: str,
-        system: str | None = None,
+        system_prompt: str | None = None,
         response_format: Type[T] | None = None,
     ) -> str | T:
         """Generate a response from the LLM.
         
         Args:
             prompt: The user prompt to send.
-            system: Optional system prompt for context.
+            system_prompt: Optional system prompt for context.
             response_format: Optional Pydantic model for structured output.
                 If provided, the response will be parsed and validated
                 into an instance of this model.
@@ -119,16 +119,16 @@ class OllamaClient:
             ValueError: If response_format is provided but parsing fails.
         """
         logger.debug(
-            "generate() called - prompt_len=%d, system=%s, structured=%s",
+            "generate() called - prompt_len=%d, system_prompt=%s, structured=%s",
             len(prompt),
-            "yes" if system else "no",
+            "yes" if system_prompt else "no",
             response_format.__name__ if response_format else "no",
         )
         
         # Build message list
         messages = []
-        if system:
-            messages.append({"role": "system", "content": system})
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": prompt})
         
         # Configure format for structured output
@@ -201,7 +201,7 @@ class OllamaClient:
     def generate_json(
         self,
         prompt: str,
-        system: str | None = None,
+        system_prompt: str | None = None,
     ) -> dict[str, Any]:
         """Generate a JSON response from the LLM with retry logic.
         
@@ -210,7 +210,7 @@ class OllamaClient:
         
         Args:
             prompt: The user prompt to send.
-            system: Optional system prompt for context.
+            system_prompt: Optional system prompt for context.
         
         Returns:
             The parsed JSON response as a dictionary.
@@ -228,8 +228,8 @@ class OllamaClient:
         
         # Build message list
         messages = []
-        if system:
-            messages.append({"role": "system", "content": system})
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": json_prompt})
         
         # Attempt generation with retries

@@ -5,11 +5,16 @@ from src.game.llm.client import OllamaClient
 import json
 import re
 import logging
+from typing import List
 from pydantic import ValidationError
 from enum import Enum
 
 
 logger = logging.getLogger(__name__)
+
+
+# Narration system prompt - kept minimal per design requirements
+
 
 
 class GMOracle:
@@ -31,7 +36,7 @@ class GMOracle:
         Ask the DM to interpret a player's intent.
         Returns a structured ActionPlan or None if action is invalid.
         """
-        prompt = GMPrompts.INTERPRETATION_PROMPT.format(context=context, intent=intent_text)
+        prompt = GMPrompts.INTERPRET_INTENT.format(context=context, intent=intent_text)
         
         # Request structured output from LLM
         response = self.llm.generate(
@@ -56,6 +61,17 @@ class GMOracle:
     ) -> str:
         """Generate the intent text for an entity's reaction"""
         prompt = GMPrompts.DESCRIBE_REACTION.format(entity=entity,triggering_action=triggering_action)
+        
+        return self.llm.generate(prompt)
+
+
+    def generate_entity_intent(self, entity: Entity, context: GameState) -> str:
+        """
+        Generate what an entity wants to do on their turn.
+        Returns intent text like "The goblin swings its rusty sword at the player".
+        """
+        # Constructing prompt inline (move to GMPrompts in production)
+        prompt = GMPrompts.GENERATE_ENTITY_INTENT.format(context=context,entity=entity)
         
         return self.llm.generate(prompt)
 

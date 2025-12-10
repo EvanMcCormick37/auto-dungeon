@@ -50,9 +50,9 @@ class PlayerCharacter:
     inventory: List[Item]
     # Dynamic Stats (Combat)
     equipped: List[Item]
-    spell_slots: List[int] | None
+    spell_slots: List[int] | None = None
     # to_notice: Requirement | None
-    conditions: List[Status] | None
+    conditions: List[Status]
     hp: int
 # NPCs and Monsters
 @dataclass
@@ -60,15 +60,12 @@ class Entity(Base):
     xp: int | None
     attributes: Attributes
     max_hp: int
-    max_morale: int
     ac: int
-@dataclass
-class Grunt(Entity):
     hp: int
-    morale: int
-    conditions: List[Status] | None
-    inventory: List[Item] | None
-    equipped: List[Item] | None
+    disposition: str
+    conditions: List[Status]
+    inventory: List[Item]
+    equipped: List[Item]
     # to_notice: Requirement | None
 # class Character(Grunt):
 #     disposition: str
@@ -89,13 +86,13 @@ class Location(Base):
 @dataclass
 class Room(Location):
     # doors: List[Door] | None
-    occupants: List[Entity] | None
-    items: List[Item] | None
+    occupants: List[Entity]
+    items: List[Item]
 @dataclass
 class Level(Base):
     room_ids: List[str]
     # hooks: List[Lore] | None
-    effects: List[Status] | None
+    effects: List[Status]
 
 # class Trap(Base):
 #     to_notice: Requirement | None      # Anything to_notice must have Requirement met to be seen
