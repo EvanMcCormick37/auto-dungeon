@@ -106,9 +106,9 @@ class Combat:
 class GameState:
     """Aggregate root - the 'current situation' snapshot"""
     # Meta
-    session_id: str
-    created_at: datetime
-    updated_at: datetime
+    # session_id: str
+    # created_at: datetime
+    # updated_at: datetime
     
     # Player
     player: PlayerCharacter
@@ -116,11 +116,10 @@ class GameState:
     # Current context (what's immediately relevant)
     current_level: Level
     current_room: Room
-
     
     # Active interactions
-    active_combat: Combat | None
-    active_conversation: Conversation | None
+    # active_combat: Combat | None
+    # active_conversation: Conversation | None
     
     # Recent history (for context)
     recent_actions: list[str]  # last 5-10 actions
