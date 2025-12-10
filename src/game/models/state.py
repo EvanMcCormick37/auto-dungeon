@@ -50,7 +50,7 @@ class PlayerCharacter(Base):
     inventory: List[Item]
     # Dynamic Stats (Combat)
     equipped: List[Item]
-    spell_slots: List[int] | None = None
+    spell_slots: List[int] | None
     # to_notice: Requirement | None
     conditions: List[Status]
     hp: int

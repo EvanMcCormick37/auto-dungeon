@@ -36,7 +36,7 @@ class GMOracle:
         Ask the DM to interpret a player's intent.
         Returns a structured ActionPlan or None if action is invalid.
         """
-        prompt = GMPrompts.INTERPRET_INTENT.format(context=context, intent=intent_text)
+        prompt = GMPrompts.INTERPRET_INTENT.format(context=context, summary=context.summary(), intent=intent_text)
         
         # Request structured output from LLM
         response = self.llm.generate(
@@ -71,7 +71,7 @@ class GMOracle:
         Returns intent text like "The goblin swings its rusty sword at the player".
         """
         # Constructing prompt inline (move to GMPrompts in production)
-        prompt = GMPrompts.GENERATE_ENTITY_INTENT.format(context=context,entity=entity)
+        prompt = GMPrompts.GENERATE_ENTITY_INTENT.format(summary=context.summary(),entity=entity)
         
         return self.llm.generate(prompt)
 

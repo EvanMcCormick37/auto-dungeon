@@ -1,4 +1,4 @@
-from typing import List, TypedDict
+from typing import List, TypedDict, Any
 from pydantic import BaseModel
 from enum import Enum
 
@@ -13,7 +13,7 @@ class StateChange(BaseModel):                   # An actual change to state
     target_id: str             # Entity/item being changed
     attribute: str             # What's changing ("hp", "position", "inventory")
     operation: str             # "set", "add", "remove", "append"
-    value: any                 # The new value or delta
+    value: Any                 # The new value or delta
 # ============================================================
 # ROLL STRUCTURES
 # ============================================================
@@ -115,5 +115,5 @@ class Action(BaseModel):
     priority: int = 0                # Higher = process first (for reactions)
     
     # Set after DM interprets the intent
-    plan: ActionPlan | None
-    resolution: Resolution | None
+    plan: ActionPlan | None = None
+    resolution: Resolution | None = None

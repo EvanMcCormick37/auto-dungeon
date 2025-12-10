@@ -24,11 +24,7 @@ class GMPrompts(str, Enum):
     INTERPRET_INTENT = """You are the Dungeon Master. Interpret the player's intended action
     and determine what dice rolls are required to resolve it.
 
-    CURRENT SITUATION:
-    - Location: {context.location.description}
-    - Player: {context.player.name}, {context.player.hp}/{context.player.max_hp} HP
-    - Nearby entities: {[e.name for e in context.entities]}
-    - Player's equipment: {context.player.equipped}
+    {summary}
 
     PLAYER'S ACTION: "{intent}"
 
@@ -78,18 +74,15 @@ class GMPrompts(str, Enum):
         "narrative_context": "Player swings their longsword at the goblin"
     }}
     """
-    GENERATE_ENTITY_INTENT = """Current game state: {context.summary()}\n
+    GENERATE_ENTITY_INTENT = """Current game state: {summary}\n
             Active Entity: {entity.name}\n
             Entity Description: {entity.description}\n
             Entity Disposition: {entity.disposition}\n
             Based on the situation and the entity's nature, describe what this enemy tries to do next.
             Provide only the narrative intent (e.g., 'The goblin attacks the nearest player with a rusty dagger').
             Keep the description simple and concise. Do not use flowery language."""
-    NARRATE_STATE_UPDATE = """STORY SO FAR:
-    {history}
-
-    CURRENT SITUATION:
-    {state_summary}
+    NARRATE_STATE_UPDATE = """
+    {summary}
 
     EVENTS TO NARRATE:
     {updates_formatted}

@@ -49,7 +49,7 @@ class GameController:
         # 3. Finalize Output
         narration = self.narrator.compose_narration(
             self.narration_buffer,
-            self.state.get_current_state()
+            self.state.get_current_state().summary()
         )
         # Check for end of combat.
         combat_result = self._check_combat_result()
@@ -109,16 +109,16 @@ class GameController:
             for change in action.resolution.pending_state_changes:
                 self.state.apply_change(change)
             
-            # Phase 4: REACT
-            for reaction in action.resolution.triggered_reactions:
-                desc = self.gm.describe_reaction(
-                    reaction.owner_id, action, self.state.get_entity(reaction.owner_id)
-                )
-                # Queue reactions as new actions
-                # Note: Reaction objects usually have their own method to convert to Action, 
-                # but following your logic we treat them as intents here.
-                reaction.intent_text = desc 
-                self.action_queue.enqueue_reaction(reaction)
+            # # Phase 4: REACT
+            # for reaction in action.resolution.triggered_reactions:
+            #     desc = self.gm.describe_reaction(
+            #         reaction.owner_id, action, self.state.get_entity(reaction.owner_id)
+            #     )
+            #     # Queue reactions as new actions
+            #     # Note: Reaction objects usually have their own method to convert to Action, 
+            #     # but following your logic we treat them as intents here.
+            #     reaction.intent_text = desc 
+            #     self.action_queue.enqueue_reaction(reaction)
 
         except Exception as e:
             self.narration_buffer.append(f"[An error occurred processing action: {str(e)}]")

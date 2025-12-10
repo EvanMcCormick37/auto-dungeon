@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     graph_cache_path: Path = cache_dir / "world_graph.pkl"
     
     # Logging
-    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "DEBUG"
     log_file: Path = data_dir / "dungeon.log"
     
     # CLI Settings

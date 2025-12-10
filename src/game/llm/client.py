@@ -150,7 +150,7 @@ class OllamaClient:
                 )
                 
                 content = response['message']['content']
-                logger.debug("Response received - length=%d", len(content))
+                logger.debug("Response received: %s", content)
                 
                 # Parse structured output if requested
                 if response_format is not None:
